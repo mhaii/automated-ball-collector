@@ -1,10 +1,7 @@
 // for storing received serial data
 int ibyte = 0;
 
-void setup() {
-  bt.begin(115200);
-  bt.println("Robot program started");
-}
+void setup() { bt.begin(115200); bt.println("Started"); }
 
 void loop() {
   if (bt.available() > 0) {
@@ -15,7 +12,7 @@ void loop() {
     delay(10);
 
     if (ibyte == 116) {
-      for (int ms = 0; ms < 2000; ms++) { // Track line for 2s
+      for (int ms = 2000; ms--;) { // Track line for 2s
         // turn left
         if (opto.readL() && opto.readC() && !opto.readR()){ m1.fw(m1.rspeed()); m2.fw(); }
         // turn right
@@ -24,13 +21,10 @@ void loop() {
         else { m1.fw(); m2.fw(); }
 
         // when in doubt, steer left!
-        while (opto.readR() && opto.readL() && opto.readC()) { m1.rv(); m2.fw(); }
+        for (ibyte = 10000; ibyte-- && opto.readC();) { m1.rv(); m2.fw(); }
         delay(10);
       }
-    } else {
-      m1.stop();
-      m2.stop();
-    }
+    } else { m1.stop(); m2.stop(); }
   }
 }
 
