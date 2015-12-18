@@ -13,14 +13,12 @@ void loop() {
 
     if (ibyte == 116) {
       for (int ms = 2000; ms--;) { // Track line for 2s
-        // turn left
-        if (opto.readL() && opto.readC() && !opto.readR()){ m1.fw(m1.rspeed()); m2.fw(); }
-        // turn right
-        else if (!opto.readL() && opto.readC() && opto.readR()){ m1.fw(); m2.fw(m2.rspeed()); }
-        // forward
-        else { m1.fw(); m2.fw(); }
-
-        // when in doubt, steer left!
+        if (opto.readC(){
+          if (opto.readL())       { m1.fw(m1.rspeed()); m2.fw(); }  // turn left
+          else if (opto.readR())  { m1.fw(); m2.fw(m2.rspeed()); }  // turn right
+          else { m1.fw(); m2.fw(); }                                // forward
+        }
+        // when in doubt, steer left! 
         for (ibyte = 10000; ibyte-- && opto.readC();) { m1.rv(); m2.fw(); }
         delay(10);
       }
