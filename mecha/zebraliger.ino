@@ -1,8 +1,5 @@
-// variable to store serial data
-int incomingByte = 0;
-
-// variable to store speed value
-int speed_val = 250;
+// for storing received serial data
+int ibyte = 0;
 
 void setup() {
   bt.begin(115200);
@@ -11,21 +8,22 @@ void setup() {
 
 void loop() {
   if (bt.available() > 0) {
-    incomingByte = bt.read();
-    bt.println(incomingByte);
+    ibyte = bt.read();
+    bt.println(ibyte);
     
-    // delay 10 milliseconds to allow serial update time
+    //delay to allow serial update time
     delay(10);
 
-    if (incomingByte == 116) {
+    if (ibyte == 116) {
       for (int ms = 0; ms < 2000; ms++) { // Track line for 2s
-        // Turn right
-        if (opto.readL() && opto.readR() && opto.readC()){ m1.fw(); m2.fw(m2.speed - 200); }
-        // Turn left
-        if (opto.readL() && !opto.readR() && opto.readC()){ m1.fw(m1.speed - 200); m2.fw(); }
-        // Forward
-        if (opto.readC()) { m1.fw(); m2.fw(); }
+        // turn left
+        if (opto.readL() && opto.readC() && !opto.readR()){ m1.fw(m1.rspeed()); m2.fw(); }
+        // turn right
+        else if (!opto.readL() && opto.readC() && opto.readR()){ m1.fw(); m2.fw(m2.rspeed()); }
+        // forward
+        else { m1.fw(); m2.fw(); }
 
+        // when in doubt, steer left!
         while (opto.readR() && opto.readL() && opto.readC()) { m1.rv(); m2.fw(); }
         delay(10);
       }
