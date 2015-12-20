@@ -9,12 +9,14 @@ void loop() {
     delay(10);
 
     switch (ibyte){
-      case 116: tracker.track(1); break;// 't' reset tracker
+      case 116: tracker.start(); break; // 't' start tracker
       default: tracker.stop();
     }
 
-    // let tracker run
-    tracker.track();
+  }
+  // let tracker run // condition true after 3 corners
+  if (!tracker.track()){
+    tracker.stop();
   }
 }
 

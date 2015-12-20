@@ -21,8 +21,8 @@ class Optosensor{
       this->l = l; this->c = c; this->r = r;
       pm(l, 0); pm(c, 0); pm(r, 0);
     }
-    bool readL(){ return digitalRead(l); }
-    bool readC(){ return digitalRead(c); }
-    bool readR(){ return digitalRead(r); }
+    bool blackL(){ return !digitalRead(l); }
+    bool blackC(){ return !digitalRead(c); }
+    bool blackR(){ return !digitalRead(r); }
 };
 
